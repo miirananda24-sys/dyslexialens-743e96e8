@@ -17,7 +17,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
   const [zoom, setZoom] = useState(1);
   const streamRef = useRef<MediaStream | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null); void intervalRef;
   const [scanCount, setScanCount] = useState(0);
 
   // Scan box state (percentage-based)
