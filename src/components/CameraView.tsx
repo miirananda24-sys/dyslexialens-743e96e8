@@ -243,29 +243,41 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
         )}
       </div>
 
-      {/* Controls */}
+      {/* Big Capture Button */}
+      <div className="mt-3 flex items-center justify-center">
+        <Button
+          onClick={capture}
+          disabled={isProcessing || !isStreaming}
+          className="h-14 px-8 rounded-full bg-gradient-primary text-primary-foreground shadow-glow font-dyslexic font-semibold text-sm gap-2 hover:shadow-deep active:scale-95 transition-all"
+        >
+          <Camera className="w-5 h-5" />
+          {isProcessing ? "Memproses..." : "Capture Paragraf"}
+        </Button>
+      </div>
+
+      {/* Secondary Controls */}
       <div className="mt-3 flex items-center justify-between">
-        <div className="flex items-center gap-1 bg-card rounded-full px-2 py-1.5 shadow-sm border border-border/50">
-          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full" onClick={() => setZoom((z) => Math.max(1, z - 0.5))}>
-            <ZoomOut className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-1 bg-card rounded-full px-2 py-1 shadow-sm border border-border/50">
+          <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full" onClick={() => setZoom((z) => Math.max(1, z - 0.5))}>
+            <ZoomOut className="w-3 h-3" />
           </Button>
-          <span className="text-xs font-dyslexic text-muted-foreground min-w-[3ch] text-center">{zoom.toFixed(1)}x</span>
-          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full" onClick={() => setZoom((z) => Math.min(4, z + 0.5))}>
-            <ZoomIn className="w-3.5 h-3.5" />
+          <span className="text-[10px] font-dyslexic text-muted-foreground min-w-[3ch] text-center">{zoom.toFixed(1)}x</span>
+          <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full" onClick={() => setZoom((z) => Math.min(4, z + 0.5))}>
+            <ZoomIn className="w-3 h-3" />
           </Button>
         </div>
 
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/60 border border-border/50">
-          <ScanLine className="w-3.5 h-3.5 text-primary" />
-          <span className="text-xs font-medium text-accent-foreground">{scanCount} scan</span>
+        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent/60 border border-border/50">
+          <ScanLine className="w-3 h-3 text-primary" />
+          <span className="text-[10px] font-medium text-accent-foreground">{scanCount}</span>
         </div>
 
         <div className="flex items-center gap-1.5">
-          <Button size="icon" variant="outline" className="h-9 w-9 rounded-full" onClick={() => fileInputRef.current?.click()}>
-            <Upload className="w-3.5 h-3.5" />
+          <Button size="icon" variant="outline" className="h-8 w-8 rounded-full" onClick={() => fileInputRef.current?.click()}>
+            <Upload className="w-3 h-3" />
           </Button>
-          <Button size="icon" variant="outline" className="h-9 w-9 rounded-full" onClick={toggleCamera}>
-            <RotateCcw className="w-3.5 h-3.5" />
+          <Button size="icon" variant="outline" className="h-8 w-8 rounded-full" onClick={toggleCamera}>
+            <RotateCcw className="w-3 h-3" />
           </Button>
         </div>
       </div>
