@@ -122,12 +122,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
     }
   }, [scanBox, onCapture, isProcessing, processImage]);
 
-  useEffect(() => {
-    if (isStreaming && !isProcessing) {
-      intervalRef.current = setInterval(capture, autoScanInterval);
-    }
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [isStreaming, isProcessing, capture, autoScanInterval]);
+  // Manual capture only — no auto-scan to keep history clean
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
