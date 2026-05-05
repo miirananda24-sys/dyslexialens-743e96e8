@@ -21,7 +21,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
   const [scanCount, setScanCount] = useState(0);
 
   // Scan box state (percentage-based)
-  const [scanBox, setScanBox] = useState({ x: 15, y: 20, w: 70, h: 60 });
+  const [scanBox, setScanBox] = useState({ x: 5, y: 10, w: 90, h: 80 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef({ mx: 0, my: 0, bx: 0, by: 0 });
 
