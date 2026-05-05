@@ -112,9 +112,9 @@ const Scan = () => {
         </div>
       </header>
 
-      <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-4 space-y-4 relative z-10">
+      <main className="flex-1 max-w-2xl mx-auto w-full px-3 sm:px-4 py-3 sm:py-4 space-y-3 sm:space-y-4 relative z-10">
         <div className="animate-scale-in">
-          <CameraView onCapture={handleCapture} isProcessing={isProcessing} autoScanInterval={3500} />
+          <CameraView onCapture={handleCapture} isProcessing={isProcessing} />
         </div>
 
         {selectedResult && (
