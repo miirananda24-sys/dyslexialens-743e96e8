@@ -187,7 +187,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
       >
         <video
           ref={videoRef}
-          className="w-full aspect-[4/3] object-cover"
+          className="w-full aspect-[3/4] sm:aspect-[4/3] object-cover"
           playsInline
           muted
           style={{ transform: `scale(${zoom})`, transformOrigin: "center center" }}
