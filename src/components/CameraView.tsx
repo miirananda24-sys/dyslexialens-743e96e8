@@ -227,7 +227,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
             <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-[10px] font-medium text-foreground">
-                {isProcessing ? "Memproses..." : "Scanning"}
+                {isProcessing ? "Memproses..." : "Arahkan ke paragraf"}
               </span>
             </div>
           </div>
