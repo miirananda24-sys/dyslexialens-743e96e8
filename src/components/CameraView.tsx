@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { RotateCcw, ZoomIn, ZoomOut, Upload, ScanLine, Move } from "lucide-react";
+import { RotateCcw, ZoomIn, ZoomOut, Upload, ScanLine, Move, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface CameraViewProps {
@@ -8,7 +8,7 @@ interface CameraViewProps {
   autoScanInterval?: number;
 }
 
-const CameraView = ({ onCapture, isProcessing, autoScanInterval = 3500 }: CameraViewProps) => {
+const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
