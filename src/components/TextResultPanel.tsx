@@ -56,7 +56,7 @@ const TextResultPanel = ({ detectedText, accessibilitySettings }: TextResultPane
     }
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang || targetLang;
-    utterance.rate = 0.85;
+    utterance.rate = 0.7;
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
     setIsSpeaking(true);

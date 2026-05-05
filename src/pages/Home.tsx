@@ -39,26 +39,26 @@ const Home = () => {
           </div>
         </header>
 
-        <main className="flex-1 flex flex-col justify-center max-w-2xl w-full mx-auto px-4 py-6 space-y-5 relative z-10 lg:max-h-[calc(100vh-140px)] lg:overflow-y-auto">
+        <main className="flex-1 flex flex-col justify-center max-w-2xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-3 sm:space-y-5 relative z-10 lg:max-h-[calc(100vh-140px)] lg:overflow-y-auto">
           {/* Hero */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-hero p-6 pb-8 text-primary-foreground shadow-xl-custom animate-fade-in-up" style={{ animationDelay: "80ms" }}>
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-hero p-4 sm:p-6 pb-5 sm:pb-8 text-primary-foreground shadow-xl-custom animate-fade-in-up" style={{ animationDelay: "80ms" }}>
             <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
             <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/5 blur-xl" />
             <div className="absolute top-1/2 right-8 w-20 h-20 rounded-full bg-white/5 blur-lg animate-float" />
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-[11px] font-medium mb-4 border border-white/10">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm text-[10px] sm:text-[11px] font-medium mb-3 sm:mb-4 border border-white/10">
                 <Sparkles className="w-3 h-3" />
                 OCR + Dyslexic Font + AI Correction
               </div>
-              <h2 className="font-dyslexic text-2xl sm:text-3xl font-extrabold leading-tight mb-3 tracking-tight">
+              <h2 className="font-dyslexic text-xl sm:text-3xl font-extrabold leading-tight mb-2 sm:mb-3 tracking-tight">
                 Bantu Membaca<br /><span className="opacity-90">Dengan Lebih Nyaman</span>
               </h2>
-              <p className="text-sm opacity-75 leading-relaxed max-w-sm mb-5">
+              <p className="text-xs sm:text-sm opacity-75 leading-relaxed max-w-sm mb-4 sm:mb-5">
                 Pindai teks apapun dan ubah ke font yang ramah disleksia. Dilengkapi terjemahan, text-to-speech, dan koreksi otomatis.
               </p>
               <button
                 onClick={() => navigate("/scan")}
-                className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-white/20 hover:bg-white/30 backdrop-blur-sm text-sm font-semibold transition-all duration-300 border border-white/20 hover:shadow-glow active:scale-95"
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white/20 hover:bg-white/30 backdrop-blur-sm text-xs sm:text-sm font-semibold transition-all duration-300 border border-white/20 hover:shadow-glow active:scale-95"
               >
                 <ScanLine className="w-4 h-4" />
                 Mulai Scan Sekarang

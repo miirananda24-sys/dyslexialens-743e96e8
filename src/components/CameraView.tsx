@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { RotateCcw, ZoomIn, ZoomOut, Upload, ScanLine, Move } from "lucide-react";
+import { RotateCcw, ZoomIn, ZoomOut, Upload, ScanLine, Move, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface CameraViewProps {
@@ -8,7 +8,7 @@ interface CameraViewProps {
   autoScanInterval?: number;
 }
 
-const CameraView = ({ onCapture, isProcessing, autoScanInterval = 3500 }: CameraViewProps) => {
+const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -17,11 +17,11 @@ const CameraView = ({ onCapture, isProcessing, autoScanInterval = 3500 }: Camera
   const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
   const [zoom, setZoom] = useState(1);
   const streamRef = useRef<MediaStream | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  // intervalRef removed — manual capture only
   const [scanCount, setScanCount] = useState(0);
 
   // Scan box state (percentage-based)
-  const [scanBox, setScanBox] = useState({ x: 15, y: 20, w: 70, h: 60 });
+  const [scanBox, setScanBox] = useState({ x: 5, y: 10, w: 90, h: 80 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef({ mx: 0, my: 0, bx: 0, by: 0 });
 
@@ -122,12 +122,7 @@ const CameraView = ({ onCapture, isProcessing, autoScanInterval = 3500 }: Camera
     }
   }, [scanBox, onCapture, isProcessing, processImage]);
 
-  useEffect(() => {
-    if (isStreaming && !isProcessing) {
-      intervalRef.current = setInterval(capture, autoScanInterval);
-    }
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [isStreaming, isProcessing, capture, autoScanInterval]);
+  // Manual capture only — no auto-scan to keep history clean
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -192,7 +187,7 @@ const CameraView = ({ onCapture, isProcessing, autoScanInterval = 3500 }: Camera
       >
         <video
           ref={videoRef}
-          className="w-full aspect-[4/3] object-cover"
+          className="w-full aspect-[3/4] sm:aspect-[4/3] object-cover"
           playsInline
           muted
           style={{ transform: `scale(${zoom})`, transformOrigin: "center center" }}
@@ -232,7 +227,7 @@ const CameraView = ({ onCapture, isProcessing, autoScanInterval = 3500 }: Camera
             <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-[10px] font-medium text-foreground">
-                {isProcessing ? "Memproses..." : "Scanning"}
+                {isProcessing ? "Memproses..." : "Arahkan ke paragraf"}
               </span>
             </div>
           </div>
@@ -248,29 +243,41 @@ const CameraView = ({ onCapture, isProcessing, autoScanInterval = 3500 }: Camera
         )}
       </div>
 
-      {/* Controls */}
+      {/* Big Capture Button */}
+      <div className="mt-3 flex items-center justify-center">
+        <Button
+          onClick={capture}
+          disabled={isProcessing || !isStreaming}
+          className="h-14 px-8 rounded-full bg-gradient-primary text-primary-foreground shadow-glow font-dyslexic font-semibold text-sm gap-2 hover:shadow-deep active:scale-95 transition-all"
+        >
+          <Camera className="w-5 h-5" />
+          {isProcessing ? "Memproses..." : "Capture Paragraf"}
+        </Button>
+      </div>
+
+      {/* Secondary Controls */}
       <div className="mt-3 flex items-center justify-between">
-        <div className="flex items-center gap-1 bg-card rounded-full px-2 py-1.5 shadow-sm border border-border/50">
-          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full" onClick={() => setZoom((z) => Math.max(1, z - 0.5))}>
-            <ZoomOut className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-1 bg-card rounded-full px-2 py-1 shadow-sm border border-border/50">
+          <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full" onClick={() => setZoom((z) => Math.max(1, z - 0.5))}>
+            <ZoomOut className="w-3 h-3" />
           </Button>
-          <span className="text-xs font-dyslexic text-muted-foreground min-w-[3ch] text-center">{zoom.toFixed(1)}x</span>
-          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full" onClick={() => setZoom((z) => Math.min(4, z + 0.5))}>
-            <ZoomIn className="w-3.5 h-3.5" />
+          <span className="text-[10px] font-dyslexic text-muted-foreground min-w-[3ch] text-center">{zoom.toFixed(1)}x</span>
+          <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full" onClick={() => setZoom((z) => Math.min(4, z + 0.5))}>
+            <ZoomIn className="w-3 h-3" />
           </Button>
         </div>
 
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/60 border border-border/50">
-          <ScanLine className="w-3.5 h-3.5 text-primary" />
-          <span className="text-xs font-medium text-accent-foreground">{scanCount} scan</span>
+        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent/60 border border-border/50">
+          <ScanLine className="w-3 h-3 text-primary" />
+          <span className="text-[10px] font-medium text-accent-foreground">{scanCount}</span>
         </div>
 
         <div className="flex items-center gap-1.5">
-          <Button size="icon" variant="outline" className="h-9 w-9 rounded-full" onClick={() => fileInputRef.current?.click()}>
-            <Upload className="w-3.5 h-3.5" />
+          <Button size="icon" variant="outline" className="h-8 w-8 rounded-full" onClick={() => fileInputRef.current?.click()}>
+            <Upload className="w-3 h-3" />
           </Button>
-          <Button size="icon" variant="outline" className="h-9 w-9 rounded-full" onClick={toggleCamera}>
-            <RotateCcw className="w-3.5 h-3.5" />
+          <Button size="icon" variant="outline" className="h-8 w-8 rounded-full" onClick={toggleCamera}>
+            <RotateCcw className="w-3 h-3" />
           </Button>
         </div>
       </div>
