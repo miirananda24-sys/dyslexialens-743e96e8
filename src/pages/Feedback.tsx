@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Moon, Sun, Mail, Send, CheckCircle, ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import PageTransition from "@/components/PageTransition";
+import LanguageToggle from "@/components/LanguageToggle";
 
 const FEEDBACK_EMAIL = "miirananda24@gmail.com";
 
 const Feedback = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [feedbackType, setFeedbackType] = useState<"bug" | "feedback">("feedback");
@@ -81,11 +84,14 @@ const Feedback = () => {
               <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
                 <Mail className="w-4 h-4 text-white" />
               </div>
-              <h1 className="text-sm font-bold text-foreground">Feedback & Bug Report</h1>
+              <h1 className="text-sm font-bold text-foreground">{t("fb.title")}</h1>
             </div>
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
-              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </Button>
+            <div className="flex items-center gap-1">
+              <LanguageToggle />
+              <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
+                {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </Button>
+            </div>
           </div>
         </header>
 
@@ -94,29 +100,28 @@ const Feedback = () => {
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 mx-auto flex items-center justify-center mb-3 shadow-glow">
               <Mail className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-foreground mb-1">Kirim Masukan</h2>
-            <p className="text-sm text-muted-foreground">Bantu kami jadi lebih baik</p>
+            <h2 className="text-xl font-bold text-foreground mb-1">{t("fb.heroTitle")}</h2>
+            <p className="text-sm text-muted-foreground">{t("fb.heroDesc")}</p>
           </div>
 
           <div className="animate-fade-in-up rounded-2xl bg-card border border-border/50 shadow-card p-5 space-y-4" style={{ animationDelay: "100ms" }}>
             <div className="flex gap-2">
               <button onClick={() => setFeedbackType("feedback")}
                 className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all ${feedbackType === "feedback" ? "bg-primary text-primary-foreground shadow-card" : "bg-muted text-muted-foreground hover:bg-accent"}`}>
-                💬 Feedback
+                💬 {t("fb.feedback")}
               </button>
               <button onClick={() => setFeedbackType("bug")}
                 className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all ${feedbackType === "bug" ? "bg-destructive text-destructive-foreground shadow-card" : "bg-muted text-muted-foreground hover:bg-accent"}`}>
-                🐛 Bug Report
+                🐛 {t("fb.bug")}
               </button>
             </div>
 
-            <input type="text" placeholder="Nama kamu (opsional)" value={name} onChange={(e) => setName(e.target.value)}
+            <input type="text" placeholder={t("fb.name")} value={name} onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-background border border-border/50 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
 
-            <textarea placeholder="Tulis pesan, saran, atau laporkan bug..." value={message} onChange={(e) => setMessage(e.target.value)} rows={4}
+            <textarea placeholder={t("fb.message")} value={message} onChange={(e) => setMessage(e.target.value)} rows={4}
               className="w-full px-4 py-2.5 rounded-xl bg-background border border-border/50 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none" />
 
-            {/* Image Upload */}
             <div className="space-y-2">
               <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImages} />
               {imagePreviews.length > 0 && (
@@ -136,14 +141,14 @@ const Feedback = () => {
                 <button onClick={() => fileRef.current?.click()}
                   className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors py-1">
                   <ImagePlus className="w-4 h-4" />
-                  Lampirkan screenshot (maks 3)
+                  {t("fb.attach")}
                 </button>
               )}
             </div>
 
             <button onClick={handleSend} disabled={!message.trim() || sent || sending}
               className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all duration-300 active:scale-[0.98] ${sent ? "bg-primary/20 text-primary" : "bg-primary text-primary-foreground hover:opacity-90 shadow-card disabled:opacity-50 disabled:cursor-not-allowed"}`}>
-              {sent ? (<><CheckCircle className="w-4 h-4" />Terkirim! Feedback kamu sudah masuk</>) : sending ? (<><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />Mengirim...</>) : (<><Send className="w-4 h-4" />Kirim Feedback</>)}
+              {sent ? (<><CheckCircle className="w-4 h-4" />{t("fb.sent")}</>) : sending ? (<><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />{t("fb.sending")}</>) : (<><Send className="w-4 h-4" />{t("fb.send")}</>)}
             </button>
           </div>
         </main>
