@@ -2,39 +2,21 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Users, Award, Mail, Moon, Sun, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import logoImg from "@/assets/logo.png";
 import PageTransition from "@/components/PageTransition";
-
-const cards = [
-  {
-    icon: Users,
-    title: "Tim Pengembang",
-    desc: "Kenali orang-orang di balik Dyslexia Lens",
-    path: "/team",
-    gradient: "bg-gradient-primary",
-    iconColor: "text-primary-foreground",
-  },
-  {
-    icon: Award,
-    title: "Kredit & Teknologi",
-    desc: "Open-source tools & libraries yang digunakan",
-    path: "/credits",
-    gradient: "bg-gradient-secondary",
-    iconColor: "text-secondary-foreground",
-  },
-  {
-    icon: Mail,
-    title: "Feedback & Bug Report",
-    desc: "Bantu kami jadi lebih baik dengan masukan kamu",
-    path: "/feedback",
-    gradient: "bg-gradient-to-br from-amber-500 to-orange-500",
-    iconColor: "text-white",
-  },
-];
+import LanguageToggle from "@/components/LanguageToggle";
 
 const About = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
+
+  const cards = [
+    { icon: Users, title: t("about.team.title"), desc: t("about.team.desc"), path: "/team", gradient: "bg-gradient-primary", iconColor: "text-primary-foreground" },
+    { icon: Award, title: t("about.credits.title"), desc: t("about.credits.desc"), path: "/credits", gradient: "bg-gradient-secondary", iconColor: "text-secondary-foreground" },
+    { icon: Mail, title: t("about.feedback.title"), desc: t("about.feedback.desc"), path: "/feedback", gradient: "bg-gradient-to-br from-amber-500 to-orange-500", iconColor: "text-white" },
+  ];
 
   return (
     <PageTransition>
@@ -44,24 +26,27 @@ const About = () => {
         <header className="sticky top-0 z-50 bg-glass border-b border-border/30">
           <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={() => navigate("/")}>
+              <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={() => navigate("/home")}>
                 <ArrowLeft className="w-5 h-5" />
               </Button>
               <div className="w-8 h-8 rounded-xl overflow-hidden">
                 <img src={logoImg} alt="Logo" className="w-full h-full object-cover" />
               </div>
-              <h1 className="text-sm font-bold text-foreground">About Us</h1>
+              <h1 className="text-sm font-bold text-foreground">{t("about.title")}</h1>
             </div>
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
-              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </Button>
+            <div className="flex items-center gap-1">
+              <LanguageToggle />
+              <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
+                {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </Button>
+            </div>
           </div>
         </header>
 
         <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-6 space-y-4 relative z-10">
           <div className="text-center animate-fade-in-up mb-2">
-            <h2 className="text-xl font-bold text-foreground mb-1">Tentang Kami</h2>
-            <p className="text-sm text-muted-foreground">Pelajari lebih lanjut tentang Dyslexia Lens</p>
+            <h2 className="text-xl font-bold text-foreground mb-1">{t("about.title")}</h2>
+            <p className="text-sm text-muted-foreground">{t("about.subtitle")}</p>
           </div>
 
           <div className="space-y-3 stagger-children">
