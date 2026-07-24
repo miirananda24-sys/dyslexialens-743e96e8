@@ -8,6 +8,9 @@ import TextResultPanel from "@/components/TextResultPanel";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import PageTransition from "@/components/PageTransition";
+import LanguageToggle from "@/components/LanguageToggle";
 
 interface CorrectionInfo {
   original: string;
@@ -28,6 +31,7 @@ const Scan = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { settings } = useAccessibility();
+  const { t, lang } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
   const [scanResults, setScanResults] = useState<ScanResult[]>([]);
   const [selectedResult, setSelectedResult] = useState<ScanResult | null>(null);
@@ -86,25 +90,27 @@ const Scan = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
       <div className="fixed inset-0 bg-gradient-mesh pointer-events-none" />
 
       <header className="sticky top-0 z-50 bg-glass border-b border-border/30">
         <div className="max-w-2xl mx-auto px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={() => navigate("/")}>
+            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={() => navigate("/home")}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow">
               <Eye className="w-4 h-4 text-primary-foreground" />
             </div>
-            <h1 className="text-sm font-bold text-foreground">Live Scan</h1>
+            <h1 className="text-sm font-bold text-foreground">{t("scan.title")}</h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
               <Sparkles className="w-3 h-3 text-primary" />
-              <span className="text-[10px] font-semibold text-primary">OCR Active</span>
+              <span className="text-[10px] font-semibold text-primary">{t("scan.active")}</span>
             </div>
+            <LanguageToggle />
             <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full" onClick={toggleTheme}>
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </Button>
@@ -125,7 +131,7 @@ const Scan = () => {
               <div className="bg-card rounded-2xl p-4 shadow-card border border-border/50">
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
-                  Koreksi OCR ({selectedResult.corrections.length} kata)
+                  {t("scan.corrections")} ({selectedResult.corrections.length} {t("scan.words")})
                 </h3>
                 <div className="space-y-1.5 max-h-40 overflow-y-auto">
                   {selectedResult.corrections.map((c, i) => (
@@ -156,10 +162,10 @@ const Scan = () => {
             <div className="flex items-center justify-between">
               <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
-                Riwayat ({scanResults.length})
+                {t("scan.history")} ({scanResults.length})
               </h2>
               <Button size="sm" variant="ghost" className="h-7 text-xs text-muted-foreground gap-1.5 hover:text-destructive" onClick={clearResults}>
-                <Trash2 className="w-3 h-3" /> Hapus
+                <Trash2 className="w-3 h-3" /> {t("scan.clear")}
               </Button>
             </div>
             <div className="space-y-1.5 max-h-60 overflow-y-auto">
@@ -177,7 +183,7 @@ const Scan = () => {
                 >
                   <p className="line-clamp-2 leading-relaxed">{result.correctedText}</p>
                   <span className="text-[10px] text-muted-foreground/50 mt-1.5 block tabular-nums">
-                    {result.timestamp.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                    {result.timestamp.toLocaleTimeString(lang === "id" ? "id-ID" : "en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
                   </span>
                 </button>
               ))}
@@ -186,6 +192,7 @@ const Scan = () => {
         )}
       </main>
     </div>
+    </PageTransition>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { RotateCcw, ZoomIn, ZoomOut, Upload, ScanLine, Move, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CameraViewProps {
   onCapture: (imageData: string) => void;
@@ -9,6 +10,7 @@ interface CameraViewProps {
 }
 
 const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
+  const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -227,7 +229,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
             <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               <span className="text-[10px] font-medium text-foreground">
-                {isProcessing ? "Memproses..." : "Arahkan ke paragraf"}
+                {isProcessing ? t("cam.processing") : t("cam.aim")}
               </span>
             </div>
           </div>
@@ -237,7 +239,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
           <div className="absolute inset-0 bg-background/20 flex items-center justify-center backdrop-blur-sm">
             <div className="bg-card/95 px-5 py-3 rounded-xl shadow-deep flex items-center gap-3">
               <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-              <span className="font-dyslexic text-xs text-card-foreground font-medium">Membaca teks...</span>
+              <span className="font-dyslexic text-xs text-card-foreground font-medium">{t("cam.reading")}</span>
             </div>
           </div>
         )}
@@ -251,7 +253,7 @@ const CameraView = ({ onCapture, isProcessing }: CameraViewProps) => {
           className="h-14 px-8 rounded-full bg-gradient-primary text-primary-foreground shadow-glow font-dyslexic font-semibold text-sm gap-2 hover:shadow-deep active:scale-95 transition-all"
         >
           <Camera className="w-5 h-5" />
-          {isProcessing ? "Memproses..." : "Capture Paragraf"}
+          {isProcessing ? t("cam.processing") : t("cam.capture")}
         </Button>
       </div>
 

@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Moon, Sun, Users, Award, Code2, FlaskConical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import PageTransition from "@/components/PageTransition";
+import LanguageToggle from "@/components/LanguageToggle";
 
 import helmiImg from "@/assets/team/helmi.jpg";
 import putriImg from "@/assets/team/putri.jpeg";
@@ -11,18 +13,19 @@ import nafisaImg from "@/assets/team/nafisa.jpeg";
 import rosaImg from "@/assets/team/rosa.jpeg";
 import oktarinaImg from "@/assets/team/oktarina.jpeg";
 
-const members = [
-  { name: "dr. Oktarina, M. Sc., Ph. D", role: "Researcher", photo: oktarinaImg, roleIcon: FlaskConical, accent: "border-secondary/30 bg-secondary/5" },
-  { name: "Helmi Rafif Hernanda", role: "Developer", photo: helmiImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
-  { name: "Nafisa Anggraini", role: "Developer", photo: nafisaImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
-  { name: "Nayla Jihan Zaskiyah", role: "Developer", photo: naylaImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
-  { name: "Puteri Elmira Nafizhah Kusumasari", role: "Developer", photo: putriImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
-  { name: "Rosa Fina Mawaddah", role: "Developer", photo: rosaImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
-];
-
 const Team = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
+
+  const members = [
+    { name: "dr. Oktarina, M. Sc., Ph. D", role: t("team.role.researcher"), photo: oktarinaImg, roleIcon: FlaskConical, accent: "border-secondary/30 bg-secondary/5" },
+    { name: "Helmi Rafif Hernanda", role: t("team.role.developer"), photo: helmiImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
+    { name: "Nafisa Anggraini", role: t("team.role.developer"), photo: nafisaImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
+    { name: "Nayla Jihan Zaskiyah", role: t("team.role.developer"), photo: naylaImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
+    { name: "Puteri Elmira Nafizhah Kusumasari", role: t("team.role.developer"), photo: putriImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
+    { name: "Rosa Fina Mawaddah", role: t("team.role.developer"), photo: rosaImg, roleIcon: Code2, accent: "border-primary/30 bg-primary/5" },
+  ];
 
   return (
     <PageTransition>
@@ -38,11 +41,14 @@ const Team = () => {
             <div className="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center">
               <Users className="w-4 h-4 text-primary-foreground" />
             </div>
-            <h1 className="text-sm font-bold text-foreground">Tim Pengembang</h1>
+            <h1 className="text-sm font-bold text-foreground">{t("team.title")}</h1>
           </div>
-          <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </Button>
+          <div className="flex items-center gap-1">
+            <LanguageToggle />
+            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -51,8 +57,8 @@ const Team = () => {
           <div className="w-16 h-16 rounded-2xl bg-gradient-primary mx-auto flex items-center justify-center mb-3 shadow-glow">
             <Award className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h2 className="text-xl font-bold text-foreground mb-1">Meet the Team</h2>
-          <p className="text-sm text-muted-foreground">Orang-orang hebat di balik Dyslexia Lens</p>
+          <h2 className="text-xl font-bold text-foreground mb-1">{t("team.heroTitle")}</h2>
+          <p className="text-sm text-muted-foreground">{t("team.heroDesc")}</p>
         </div>
 
         <div className="space-y-2.5 stagger-children">

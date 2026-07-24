@@ -3,6 +3,7 @@ import { Volume2, VolumeX, Languages, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AccessibilitySettings {
   fontSize: number;
@@ -40,6 +41,7 @@ const LANGUAGES = [
 ];
 
 const TextResultPanel = ({ detectedText, accessibilitySettings }: TextResultPanelProps) => {
+  const { t } = useLanguage();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [targetLang, setTargetLang] = useState("en");
   const [translatedText, setTranslatedText] = useState("");
@@ -74,10 +76,10 @@ const TextResultPanel = ({ detectedText, accessibilitySettings }: TextResultPane
       if (data.responseData?.translatedText) {
         setTranslatedText(data.responseData.translatedText);
       } else {
-        toast.error("Terjemahan gagal");
+        toast.error(t("scan.translateFail"));
       }
     } catch {
-      toast.error("Error saat menerjemahkan");
+      toast.error(t("scan.translateErr"));
     } finally {
       setIsTranslating(false);
     }
@@ -86,7 +88,7 @@ const TextResultPanel = ({ detectedText, accessibilitySettings }: TextResultPane
   const copyText = () => {
     navigator.clipboard.writeText(translatedText || detectedText);
     setCopied(true);
-    toast.success("Teks disalin!");
+    toast.success(t("scan.copied"));
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -102,7 +104,7 @@ const TextResultPanel = ({ detectedText, accessibilitySettings }: TextResultPane
     <div className="w-full space-y-3">
       <div className="bg-card rounded-2xl p-4 shadow-sm border border-border/50">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Teks Terdeteksi</h3>
+          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{t("scan.detected")}</h3>
           <div className="flex gap-0.5">
             <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => speak(detectedText, "auto")}>
               {isSpeaking ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
@@ -133,14 +135,14 @@ const TextResultPanel = ({ detectedText, accessibilitySettings }: TextResultPane
           <Button size="sm" onClick={translate} disabled={isTranslating} className="bg-gradient-primary text-primary-foreground h-9 px-4 rounded-xl">
             {isTranslating ? (
               <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-            ) : "Terjemahkan"}
+            ) : t("scan.translate")}
           </Button>
         </div>
 
         {translatedText && (
           <div className="bg-accent/40 rounded-xl p-3">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Hasil Terjemahan</span>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{t("scan.translated")}</span>
               <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => speak(translatedText, targetLang)}>
                 <Volume2 className="w-3 h-3" />
               </Button>

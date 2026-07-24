@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Moon, Sun, ExternalLink, Code2, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import PageTransition from "@/components/PageTransition";
+import LanguageToggle from "@/components/LanguageToggle";
 
 const credits = [
   {
@@ -80,6 +82,7 @@ const credits = [
 const Credits = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <PageTransition>
@@ -95,22 +98,24 @@ const Credits = () => {
             <div className="w-8 h-8 rounded-xl bg-gradient-secondary flex items-center justify-center">
               <Code2 className="w-4 h-4 text-secondary-foreground" />
             </div>
-            <h1 className="text-sm font-bold text-foreground">Kredit & Teknologi</h1>
+            <h1 className="text-sm font-bold text-foreground">{t("credits.title")}</h1>
           </div>
-          <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </Button>
+          <div className="flex items-center gap-1">
+            <LanguageToggle />
+            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full" onClick={toggleTheme}>
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </Button>
+          </div>
         </div>
       </header>
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-6 relative z-10">
-        {/* Hero */}
         <div className="text-center mb-5 animate-fade-in-up">
           <div className="w-16 h-16 rounded-2xl bg-gradient-secondary mx-auto flex items-center justify-center mb-3 shadow-glow-purple">
             <BookOpen className="w-8 h-8 text-secondary-foreground" />
           </div>
-          <h2 className="text-xl font-bold text-foreground mb-1">Teknologi yang Digunakan</h2>
-          <p className="text-sm text-muted-foreground">Open-source tools & libraries</p>
+          <h2 className="text-xl font-bold text-foreground mb-1">{t("credits.heroTitle")}</h2>
+          <p className="text-sm text-muted-foreground">{t("credits.heroDesc")}</p>
         </div>
 
         <div className="space-y-2 stagger-children">
@@ -131,7 +136,7 @@ const Credits = () => {
                   <ExternalLink className="w-3 h-3 text-muted-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{c.desc}</p>
-                <p className="text-[11px] text-primary font-medium mt-1">oleh {c.author}</p>
+                <p className="text-[11px] text-primary font-medium mt-1">{t("credits.by")} {c.author}</p>
               </div>
             </a>
           ))}
